@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maison LUIX | 3D VIP Private Chamber & Authentication</title>
+  <meta name="description" content="Enter the private chambers of Maison LUIX Haute Couture. 3D VIP Authentication and Royal Membership portal.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚜</text></svg>">
+  <style>
+    /* Dedicated 3D Login Page Custom Styles */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #14141e 0%, #09090d 60%, #040406 100%);
+      overflow: hidden;
+      perspective: 1600px;
+    }
+
+    #login3dCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .login-top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .return-boutique-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      padding: 10px 22px;
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-full);
+      background: rgba(15, 15, 22, 0.6);
+      backdrop-filter: blur(12px);
+      transition: var(--transition-fast);
+    }
+    .return-boutique-link:hover {
+      background: var(--gold-metallic);
+      color: #000;
+      box-shadow: 0 0 20px var(--gold-primary);
+      transform: translateY(-2px);
+    }
+
+    /* 3D Holographic Card Stage */
+    .login-stage-3d {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 480px;
+      margin: 40px auto;
+      perspective: 1800px;
+    }
+
+    .login-3d-card-wrapper {
+      width: 100%;
+      min-height: 620px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1.2);
+    }
+
+    .login-3d-card-wrapper.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .login-card-face {
+      position: absolute;
+      inset: 0;
+      min-height: 620px;
+      background: linear-gradient(145deg, rgba(24, 24, 34, 0.88) 0%, rgba(12, 12, 18, 0.95) 100%);
+      border: 1px solid var(--border-gold-bright);
+      border-radius: var(--radius-xl);
+      padding: 44px 40px;
+      box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.95), 0 0 45px rgba(212, 175, 55, 0.3);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-card-face.back {
+      transform: rotateY(180deg);
+    }
+
+    /* Holographic Light Sheen */
+    .login-card-face::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .biometric-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: var(--transition-fast);
+    }
+
+    .biometric-btn:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .vip-privileges-footer {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 18px;
+      margin-top: auto;
+      border-top: 1px solid var(--border-gold-subtle);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background 3D Engine Canvas -->
+  <canvas id="login3dCanvas"></canvas>
+
+  <!-- Top Navigation Bar -->
+  <header class="login-top-bar">
+    <a href="index.html" class="brand-logo" style="text-align: left;">
+      <div class="logo-symbol">⚜</div>
+      <div class="logo-title" style="font-size: 1.6rem;">LUIX</div>
+      <div class="logo-sub">Haute Couture</div>
+    </a>
+
+    <a href="index.html" class="return-boutique-link">
+      <span>← Return to Boutique</span>
+    </a>
+  </header>
+
+  <!-- 3D Interactive Gyro-Tilt Card Stage -->
+  <div class="login-stage-3d" id="loginCardStage">
+    <div id="login3dCardWrapper" class="login-3d-card-wrapper">
+      
+      <!-- FRONT SIDE: VIP MEMBER SIGN IN -->
+      <div class="login-card-face front">
+        <div class="auth-header">
+          <div class="auth-crest-icon">⚜</div>
+          <h2 class="auth-title">VIP Member Chamber</h2>
+          <p class="auth-subtitle">Authenticating Noble Access</p>
+        </div>
+
+        <form class="auth-form" onsubmit="handleLoginPageSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Noble Account Email</label>
+            <div class="input-with-icon">
+              <span class="input-icon">✉</span>
+              <input type="email" id="loginEmail" class="auth-input" placeholder="lord.alexander@luix.com" value="vip@luix.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Private Passcode</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="loginPass" class="auth-input" placeholder="••••••••••••" value="luxury2026" required>
+            </div>
+          </div>
+
+          <div class="auth-options-row">
+            <label class="remember-checkbox">
+              <input type="checkbox" checked accent-color="#d4af37">
+              <span>Retain Session</span>
+            </label>
+            <a href="javascript:void(0)" class="forgot-pass-link" onclick="showToast('Passcode recovery dispatched to confidential contact.')">Recover Passcode</a>
+          </div>
+
+          <button type="submit" class="auth-submit-btn">Authorize Entry</button>
+
+          <!-- Simulated Biometric / FaceID -->
+          <button type="button" class="biometric-btn" onclick="triggerBiometricLogin()">
+            <span>✧</span> TouchID / FaceID Biometric VIP Login
+          </button>
+
+          <!-- 1-Click Fast Pass -->
+          <button type="button" class="fast-demo-btn" onclick="triggerDemoLogin()">
+            <span>👑</span> Instant VIP Pass: Lord Alexander Vance
+          </button>
+
+          <div class="flip-toggle-text">
+            Seeking an invitation? 
+            <span class="flip-link-btn" onclick="toggleCardFlip()">Request Royal Pass →</span>
+          </div>
+
+          <!-- VIP Privileges Badges -->
+          <div class="vip-privileges-footer">
+            <span>✦ Bespoke Fitting</span>
+            <span>•</span>
+            <span>✦ White-Glove 24H</span>
+            <span>•</span>
+            <span>✦ Private Stylist</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- BACK SIDE: REQUEST ROYAL MEMBERSHIP -->
+      <div class="login-card-face back">
+        <div class="auth-header">
+          <div class="auth-crest-icon">👑</div>
+          <h2 class="auth-title">Royal Membership</h2>
+          <p class="auth-subtitle">Apply For Maison LUIX Privileges</p>
+        </div>
+
+        <form class="auth-form" onsubmit="handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Distinguished Full Name</label>
+            <div class="input-with-icon">
+              <span class="input-icon">👤</span>
+              <input type="text" id="regName" class="auth-input" placeholder="Lady Genevieve Sterling" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Private Email</label>
+            <div class="input-with-icon">
+              <span class="input-icon">✉</span>
+              <input type="email" id="regEmail" class="auth-input" placeholder="genevieve@sterling.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Selected Atelier Tier</label>
+            <select id="regTier" class="auth-input" style="padding-left: 14px;">
+              <option value="Royal Noir VIP">Royal Noir VIP (All Privileges)</option>
+              <option value="Gold Elite Member">Gold Elite Member</option>
+              <option value="Sartorial Connoisseur">Sartorial Connoisseur</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Create Security Passcode</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="regPass" class="auth-input" placeholder="••••••••••••" required>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-submit-btn">Commission VIP Account</button>
+
+          <div class="flip-toggle-text">
+            Already possess credentials? 
+            <span class="flip-link-btn" onclick="toggleCardFlip()">← Return to Sign In</span>
+          </div>
+
+          <div class="vip-privileges-footer">
+            <span>⚜ Place Vendôme</span>
+            <span>•</span>
+            <span>⚜ Via Montenapoleone</span>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="luxToast" class="lux-toast">
+    <span class="lux-toast-icon">✦</span>
+    <span id="toastMsgText"></span>
+  </div>
+
+  <script>
+    // ==========================================================================
+    // 3D Canvas Interactive Gemstone & Cosmic Starfield Engine
+    // ==========================================================================
+    const canvas = document.getElementById('login3dCanvas');
+    const ctx = canvas.getContext('2d');
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    // 3D Geometry
+    const phi = (1 + Math.sqrt(5)) / 2;
+    const vertices = [
+      [-1,  phi, 0], [ 1,  phi, 0], [-1, -phi, 0], [ 1, -phi, 0],
+      [ 0, -1,  phi], [ 0,  1,  phi], [ 0, -1, -phi], [ 0,  1, -phi],
+      [ phi, 0, -1], [ phi, 0,  1], [-phi, 0, -1], [-phi, 0,  1]
+    ];
+    const edges = [
+      [0,11],[0,5],[0,1],[0,7],[0,10],
+      [1,5],[1,9],[1,8],[1,7],
+      [2,11],[2,4],[2,3],[2,6],[2,10],
+      [3,9],[3,4],[3,8],[3,6],
+      [4,5],[4,9],[4,11],
+      [5,9],[5,11],
+      [6,7],[6,8],[6,10],
+      [7,8],[7,10],
+      [8,9],[10,11]
+    ];
+
+    let rotX = 0.3;
+    let rotY = 0.6;
+    let targetRotX = 0.3;
+    let targetRotY = 0.6;
+
+    // Stars / Gold dust particles
+    const stars = [];
+    for (let i = 0; i < 90; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 2 + 0.6,
+        alpha: Math.random() * 0.7 + 0.2,
+        speed: Math.random() * 0.4 + 0.1
+      });
+    }
+
+    // Mouse movement updates 3D rotation and card tilt
+    const cardStage = document.getElementById('loginCardStage');
+    const cardWrapper = document.getElementById('login3dCardWrapper');
+
+    window.addEventListener('mousemove', (e) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      const nx = (e.clientX - cx) / cx;
+      const ny = (e.clientY - cy) / cy;
+
+      targetRotY = nx * 1.5;
+      targetRotX = -ny * 1.5;
+
+      // 3D Tilt Card effect
+      const tiltX = -ny * 14;
+      const tiltY = nx * 14;
+      if (cardWrapper && !cardWrapper.classList.contains('flipped')) {
+        cardWrapper.style.transform = `perspective(1800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      } else if (cardWrapper && cardWrapper.classList.contains('flipped')) {
+        cardWrapper.style.transform = `perspective(1800px) rotateX(${tiltX}deg) rotateY(${180 + tiltY}deg)`;
+      }
+
+      // Specular sheen position
+      document.querySelectorAll('.login-card-face').forEach(face => {
+        const rect = face.getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * 100;
+        const py = ((e.clientY - rect.top) / rect.height) * 100;
+        face.style.setProperty('--mouse-x', `${px}%`);
+        face.style.setProperty('--mouse-y', `${py}%`);
+      });
+    });
+
+    function project(x, y, z, scale, cx, cy) {
+      const fov = 450;
+      const distance = 4.2 + z;
+      const f = fov / (distance * 100);
+      return { x: x * f * scale + cx, y: y * f * scale + cy, depth: z };
+    }
+
+    function rotateX3D(y, z, a) {
+      return [y * Math.cos(a) - z * Math.sin(a), y * Math.sin(a) + z * Math.cos(a)];
+    }
+    function rotateY3D(x, z, a) {
+      return [x * Math.cos(a) + z * Math.sin(a), -x * Math.sin(a) + z * Math.cos(a)];
+    }
+
+    function render3DScene() {
+      ctx.clearRect(0, 0, w, h);
+
+      rotX += (targetRotX - rotX) * 0.04 + 0.003;
+      rotY += (targetRotY - rotY) * 0.04 + 0.005;
+
+      // Background ambient gold dust
+      for (let s of stars) {
+        s.y -= s.speed;
+        if (s.y < 0) {
+          s.y = h;
+          s.x = Math.random() * w;
+        }
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212, 175, 55, ${s.alpha})`;
+        ctx.fill();
+      }
+
+      // Center geometry behind the card
+      const cx = w / 2;
+      const cy = h / 2;
+      const scale = Math.min(w, h) * 0.38;
+
+      const projected = [];
+      for (let v of vertices) {
+        let [x, y, z] = v;
+        const len = Math.sqrt(x*x + y*y + z*z);
+        x /= len; y /= len; z /= len;
+
+        let [rx, rz1] = rotateY3D(x, z, rotY);
+        let [ry, rz2] = rotateX3D(y, rz1, rotX);
+        projected.push(project(rx, ry, rz2, scale, cx, cy));
+      }
+
+      // Orbital gold halos
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, scale * 1.5, scale * 0.4, rotY * 0.3, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.22)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, scale * 1.8, scale * 0.5, -rotY * 0.2, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Edges with gold metallic gradients
+      ctx.shadowBlur = 16;
+      ctx.shadowColor = 'rgba(212, 175, 55, 0.55)';
+
+      for (let e of edges) {
+        const p1 = projected[e[0]];
+        const p2 = projected[e[1]];
+        const avgDepth = (p1.depth + p2.depth) / 2;
+        const alpha = Math.max(0.12, (avgDepth + 1.2) / 2.4);
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(212, 175, 55, ${alpha * 0.85})`;
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+      }
+
+      // Nodes
+      for (let p of projected) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#f7e6b5';
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = '#ffd700';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(render3DScene);
+    }
+    render3DScene();
+
+    // ==========================================================================
+    // Card Flip & Authentication Logic
+    // ==========================================================================
+    function toggleCardFlip() {
+      cardWrapper.classList.toggle('flipped');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('luxToast');
+      document.getElementById('toastMsgText').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    async function handleLoginPageSubmit(e) {
+      if (e) e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+
+      const user = {
+        name: email === 'vip@luix.com' ? 'Lord Alexander Vance' : (email.split('@')[0].toUpperCase()),
+        email: email,
+        tier: 'Royal Noir VIP'
+      };
+
+      try {
+        await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        });
+      } catch (err) {}
+
+      localStorage.setItem('luix_user', JSON.stringify(user));
+      showToast(`Welcome to the Private Salon, ${user.name}`);
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1000);
+    }
+
+    function triggerBiometricLogin() {
+      showToast('Biometric FaceID Verified • Welcome Lord Alexander');
+      const user = {
+        name: 'Lord Alexander Vance',
+        email: 'vip@luix.com',
+        tier: 'Royal Noir VIP'
+      };
+      localStorage.setItem('luix_user', JSON.stringify(user));
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    }
+
+    function triggerDemoLogin() {
+      document.getElementById('loginEmail').value = 'vip@luix.com';
+      document.getElementById('loginPass').value = 'luxury2026';
+      handleLoginPageSubmit();
+    }
+
+    async function handleRegisterSubmit(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const tier = document.getElementById('regTier').value;
+      const pass = document.getElementById('regPass').value.trim();
+
+      const user = { name, email, tier };
+      try {
+        await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password: pass, tier })
+        });
+      } catch (err) {}
+
+      localStorage.setItem('luix_user', JSON.stringify(user));
+      showToast(`Royal Membership Granted: ${name}`);
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
+

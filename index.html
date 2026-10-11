@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUREVANT — Haute Maison | Luxury Menswear & Bespoke Sartorial</title>
+  <meta name="description" content="AUREVANT — Luxury menswear and premium designer clothing for the vanguard of distinction. Considered design. Exceptional materials.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,12 88,88 12,88' fill='none' stroke='%23C6A875' stroke-width='6'/><polyline points='50,12 50,88' stroke='%23C6A875' stroke-width='4'/></svg>">
+</head>
+<body>
+
+  <!-- ==============================================================================
+       A. ANNOUNCEMENT BAR
+       ============================================================================== -->
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span>COMPLIMENTARY INSURED WHITE-GLOVE DELIVERY ACROSS INDIA</span>
+      <span class="announcement-dot"></span>
+      <span>CASH ON DELIVERY AVAILABLE ON ORDERS UP TO ₹50,000</span>
+      <span class="announcement-dot"></span>
+      <span>SECURE 256-BIT ENCRYPTED PAYMENTS</span>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       B. LUXURY NAVIGATION HEADER
+       ============================================================================== -->
+  <header class="main-header">
+    <div class="header-container">
+      
+      <!-- Left: Navigation Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link active">Home</a></li>
+          <li><a href="#featured-collection" class="nav-link">Shop</a></li>
+          <li><a href="#category-collections" class="nav-link">Collections</a></li>
+          <li><a href="#the-house" class="nav-link">The House</a></li>
+          <li><a href="#journal" class="nav-link">Journal</a></li>
+        </ul>
+      </nav>
+
+      <!-- Center: Original AUREVANT Brand Identity (Custom AV Monogram + Wordmark) -->
+      <a href="#" class="brand-identity">
+        <!-- Original Symmetrical A+V Monogram SVG -->
+        <svg class="brand-monogram-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer Architectural European Crest Shield -->
+          <path d="M50 4 C68 4 84 14 84 34 C84 62 50 96 50 96 C50 96 16 62 16 34 C16 14 32 4 50 4 Z" 
+                stroke="#C6A875" stroke-width="2.2" stroke-miterlimit="10"/>
+          <!-- Inner Fine Double Border -->
+          <path d="M50 9 C64 9 79 17 79 34 C79 58 50 88 50 88 C50 88 21 58 21 34 C21 17 36 9 50 9 Z" 
+                stroke="#C6A875" stroke-width="0.8" stroke-opacity="0.6"/>
+          <!-- Symmetrical Letter A Apex -->
+          <polygon points="50,22 66,62 34,62" fill="none" stroke="#C6A875" stroke-width="2.6"/>
+          <!-- Crossbar of A -->
+          <line x1="39" y1="52" x2="61" y2="52" stroke="#C6A875" stroke-width="2"/>
+          <!-- Interlocking Deep Letter V Chevron -->
+          <polyline points="34,44 50,78 66,44" fill="none" stroke="#C6A875" stroke-width="2.6"/>
+          <!-- Central Star Finial -->
+          <circle cx="50" cy="38" r="2.2" fill="#C6A875"/>
+        </svg>
+
+        <span class="brand-wordmark">AUREVANT</span>
+        <span class="brand-subtext">HAUTE MAISON • PARIS & MUMBAI</span>
+      </a>
+
+      <!-- Right: Search, Account & Shopping Bag -->
+      <div class="header-utilities">
+        <!-- Live Catalog Search Input -->
+        <div style="position: relative; display: flex; align-items: center;">
+          <input type="text" id="headerSearchInput" class="newsletter-input" 
+                 placeholder="Search garments, silks, denims..." 
+                 style="padding: 6px 12px; font-size: 0.72rem; width: 180px; height: 32px; border-radius: 1px;">
+        </div>
+
+        <!-- Account / Concierge -->
+        <a href="javascript:void(0)" class="util-btn" onclick="openAdminModal()" title="Client Desk / Admin">
+          <span>Desk</span>
+        </a>
+
+        <!-- Order Track -->
+        <a href="#service-strip" class="util-btn" title="Track Order">
+          <span>Track</span>
+        </a>
+
+        <!-- Shopping Bag Trigger -->
+        <button type="button" class="util-btn cart-btn-wrap" onclick="openCartDrawer()" title="Shopping Bag">
+          <span>Bag</span>
+          <span id="cartCounter" class="cart-counter" style="display: none;">0</span>
+        </button>
+
+        <!-- Admin Portal Badge -->
+        <a href="javascript:void(0)" class="admin-portal-pill" onclick="openAdminModal()">
+          Director Portal
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==============================================================================
+       C. CINEMATIC HERO SECTION
+       ============================================================================== -->
+  <section class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-vignette"></div>
+
+    <div class="hero-content">
+      <!-- Minimal Heraldic Monogram Emblem -->
+      <svg class="hero-monogram-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 4 C68 4 84 14 84 34 C84 62 50 96 50 96 C50 96 16 62 16 34 C16 14 32 4 50 4 Z" 
+              stroke="#C6A875" stroke-width="2"/>
+        <polygon points="50,22 66,62 34,62" fill="none" stroke="#C6A875" stroke-width="2.4"/>
+        <line x1="39" y1="52" x2="61" y2="52" stroke="#C6A875" stroke-width="1.8"/>
+        <polyline points="34,44 50,78 66,44" fill="none" stroke="#C6A875" stroke-width="2.4"/>
+      </svg>
+
+      <span class="hero-pretitle">AUREVANT • AUTUMN / WINTER 2026</span>
+      
+      <h1 class="hero-heading">
+        DISTINCTION IS EARNED.
+      </h1>
+
+      <p class="hero-supporting">
+        Considered design. Exceptional materials. A standard beyond the ordinary. 
+        Engineered for those whose presence requires no introduction.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#featured-collection" class="btn-luxury">
+          <span>DISCOVER THE COLLECTION</span>
+          <span>→</span>
+        </a>
+        <a href="#the-house" class="btn-luxury-outline">
+          <span>EXPLORE THE HOUSE</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       D. CATEGORY COLLECTIONS SECTION
+       ============================================================================== -->
+  <section id="category-collections" class="section-padding">
+    <div class="section-header">
+      <span class="section-pretitle">The Permanent Ledger</span>
+      <h2 class="section-title">Category Collections</h2>
+      <p class="section-desc">
+        Four fundamental pillars of luxury menswear, each crafted to an exacting standard of material origin and tailored longevity.
+      </p>
+    </div>
+
+    <div class="category-grid">
+      
+      <!-- Category 1: Signature T-Shirts -->
+      <div class="category-card" onclick="setCategoryFilter('t-shirts')">
+        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1000&q=85" alt="Signature T-Shirts" class="category-img">
+        <div class="category-card-overlay">
+          <span class="category-card-tag">Pillar I</span>
+          <h3 class="category-card-name">Signature T-Shirts</h3>
+          <span class="category-card-price-range">₹19,999 – ₹24,999</span>
+          <span class="category-card-cta">Discover Silks & Cottons →</span>
+        </div>
+      </div>
+
+      <!-- Category 2: Tailored Shirts -->
+      <div class="category-card" onclick="setCategoryFilter('shirts')">
+        <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1000&q=85" alt="Tailored Shirts" class="category-img">
+        <div class="category-card-overlay">
+          <span class="category-card-tag">Pillar II</span>
+          <h3 class="category-card-name">Tailored Shirts</h3>
+          <span class="category-card-price-range">₹24,999 – ₹29,999</span>
+          <span class="category-card-cta">Explore Thomas Mason Poplin →</span>
+        </div>
+      </div>
+
+      <!-- Category 3: Premium Denim -->
+      <div class="category-card" onclick="setCategoryFilter('denim')">
+        <img src="https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=1000&q=85" alt="Premium Denim" class="category-img">
+        <div class="category-card-overlay">
+          <span class="category-card-tag">Pillar III</span>
+          <h3 class="category-card-name">Premium Denim</h3>
+          <span class="category-card-price-range">₹24,999 – ₹29,999</span>
+          <span class="category-card-cta">Inspect 14oz Selvedge →</span>
+        </div>
+      </div>
+
+      <!-- Category 4: Outerwear & Jackets -->
+      <div class="category-card" onclick="setCategoryFilter('outerwear')">
+        <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=1000&q=85" alt="Outerwear" class="category-img">
+        <div class="category-card-overlay">
+          <span class="category-card-tag">Pillar IV</span>
+          <h3 class="category-card-name">Outerwear & Jackets</h3>
+          <span class="category-card-price-range">From ₹29,999</span>
+          <span class="category-card-cta">View Cashmere & Suede →</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       E. FEATURED COLLECTION
+       ============================================================================== -->
+  <section id="featured-collection" class="section-padding" style="background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="section-header">
+      <span class="section-pretitle">Selected Pieces</span>
+      <h2 class="section-title">The Autumn / Winter Atelier</h2>
+      <p class="section-desc">
+        Meticulously tailored garments available in strictly controlled allocations. Inspect individual fabric provenance and sizing specifications.
+      </p>
+    </div>
+
+    <!-- Filter & Sort Controls -->
+    <div class="collection-filter-bar">
+      <div class="filter-pills">
+        <button type="button" class="filter-pill active" data-category="all">All Garments</button>
+        <button type="button" class="filter-pill" data-category="t-shirts">T-Shirts (₹19,999+)</button>
+        <button type="button" class="filter-pill" data-category="shirts">Tailored Shirts (₹24,999+)</button>
+        <button type="button" class="filter-pill" data-category="denim">Selvedge Denim (₹24,999+)</button>
+        <button type="button" class="filter-pill" data-category="outerwear">Outerwear (₹29,999+)</button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <select id="catalogSortSelect" class="newsletter-input" style="padding: 8px 14px; font-size: 0.74rem;" title="Sort by">
+          <option value="featured">Sort: Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Dynamic Products Grid (Rendered via app.js) -->
+    <div id="featuredProductsGrid" class="products-grid">
+      <!-- Populated via JavaScript -->
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       F. BRAND PHILOSOPHY
+       ============================================================================== -->
+  <section id="the-house" class="philosophy-section">
+    <div class="philosophy-layout">
+      
+      <div class="philosophy-text-col">
+        <span class="section-pretitle">The House Philosophy</span>
+        <h2 class="philosophy-lead">
+          “True luxury does not clamor for attention. It exists in the weight of the drape, the precision of the stitch, and the quiet confidence of the wearer.”
+        </h2>
+        
+        <p class="philosophy-body">
+          AUREVANT was established on a single principle: that modern elegance in India requires an international luxury standard stripped of transient trends and loud logos. We design for the connoisseur who appreciates the distinction between mere expense and genuine refinement.
+        </p>
+
+        <p class="philosophy-body">
+          Every collection is produced in disciplined batches. Fabrics are chosen solely for their structural integrity and natural sensory touch — extra-long staple Egyptian Giza cottons, unwashed Okayama shuttle-loom selvedge, and double-faced Mongolian cashmere.
+        </p>
+
+        <div class="philosophy-stats-grid">
+          <div>
+            <div class="philo-stat-num">260 GSM</div>
+            <div class="philo-stat-label">Minimum T-Shirt Weight</div>
+          </div>
+          <div>
+            <div class="philo-stat-num">22 SPI</div>
+            <div class="philo-stat-label">Stitches Per Inch in Tailoring</div>
+          </div>
+          <div>
+            <div class="philo-stat-num">100%</div>
+            <div class="philo-stat-label">Natural Fibers & Horn Buttons</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="philosophy-visual-col">
+        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=85" alt="AUREVANT Tailoring Philosophy" class="philosophy-visual-img">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       G. CRAFTSMANSHIP SECTION
+       ============================================================================== -->
+  <section class="craftsmanship-section">
+    <div class="section-header">
+      <span class="section-pretitle">The Discipline of Detail</span>
+      <h2 class="section-title">Atelier Craftsmanship</h2>
+      <p class="section-desc">
+        The integrity of an AUREVANT garment is revealed through rigorous physical inspection.
+      </p>
+    </div>
+
+    <div class="craft-pillars-grid">
+      
+      <div class="craft-pillar-card">
+        <div class="craft-pillar-num">01</div>
+        <h3 class="craft-pillar-title">Fiber Architecture</h3>
+        <p class="craft-pillar-desc">
+          We reject synthetic compromises. Our cottons represent the top 1% harvest of Egyptian Giza 45 and Peruvian Pima. Double-mercerisation imparts a subtle liquid luster that deepens through years of wear rather than washing away.
+        </p>
+        <div class="craft-pillar-specs">
+          Fiber Length: 36mm+ • Single-Origin Traceability
+        </div>
+      </div>
+
+      <div class="craft-pillar-card">
+        <div class="craft-pillar-num">02</div>
+        <h3 class="craft-pillar-title">Structural Construction</h3>
+        <p class="craft-pillar-desc">
+          Our tailored shirts feature hand-turned semi-spread Milanese collars with removable brass collar stays. Buttonholes are finished with 100% silk thread, securing genuine Australian mother-of-pearl buttons carved from sustainable Pinctada shells.
+        </p>
+        <div class="craft-pillar-specs">
+          Single-Needle Felled Seams • Split Yoke
+        </div>
+      </div>
+
+      <div class="craft-pillar-card">
+        <div class="craft-pillar-num">03</div>
+        <h3 class="craft-pillar-title">Longevity & Care</h3>
+        <p class="craft-pillar-desc">
+          Luxury is measured by longevity. We engineer pre-shrunk ribbing and reinforced shoulder taping so your garment maintains its architectural contour wash after wash. Every piece is supplied with a cedar hanger and breathable garment envelope.
+        </p>
+        <div class="craft-pillar-specs">
+          Lifetime Seam Repair Service Available
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       H. PRIVATE COLLECTION / LIMITED RELEASES
+       ============================================================================== -->
+  <section class="limited-releases-section">
+    <div class="limited-hero-card">
+      <div class="limited-info-col">
+        <div class="limited-counter-badge">
+          <span>✦</span> NUMBERED ALLOCATION: 25 COMMISSIONED PIECES
+        </div>
+        
+        <h2 class="limited-title">The Sovereign Double-Faced Cashmere Overcoat</h2>
+        
+        <p class="limited-desc">
+          Crafted from 100% Grade-A Mongolian virgin cashmere. Two independently woven layers are hand-split along every edge and invisibly needle-stitched back into themselves — producing an unlined garment of supreme warmth, breathability, and weightless fluid drape.
+        </p>
+
+        <ul class="limited-specs-list">
+          <li>580 GSM Double-Faced Virgin Mongolian Cashmere</li>
+          <li>44 Hours of Manual Hand-Needle Seaming per Coat</li>
+          <li>Custom Matte Champagne Gold AV Monogram Internal Plate</li>
+          <li>Hand-Selected Dark Buffalo Horn Buttons</li>
+        </ul>
+
+        <div style="display: flex; gap: 16px; align-items: baseline; margin-bottom: 24px;">
+          <span style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--champagne-gold);">₹79,999</span>
+          <span style="font-size: 0.75rem; color: var(--muted-stone); text-transform: uppercase;">Complimentary White-Glove Suit Bag Included</span>
+        </div>
+
+        <button type="button" class="btn-luxury" onclick="openProductDetail('av-out-01')">
+          <span>Inspect Allocation</span>
+          <span>→</span>
+        </button>
+      </div>
+
+      <div class="limited-visual-col">
+        <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=1200&q=85" alt="Sovereign Cashmere Overcoat" class="limited-visual-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       I. LUXURY SERVICE STRIP
+       ============================================================================== -->
+  <section id="service-strip" class="service-strip">
+    <div class="service-strip-container">
+      
+      <div class="service-item">
+        <div class="service-icon">🔒</div>
+        <div>
+          <h4 class="service-title">Secure Banking</h4>
+          <p class="service-desc">256-bit encryption with Razorpay UPI, Cards, and Net Banking gateways.</p>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <div class="service-icon">⚜</div>
+        <div>
+          <h4 class="service-title">Cash on Delivery</h4>
+          <p class="service-desc">Supported across eligible Indian metro addresses up to ₹50,000.</p>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <div class="service-icon">✈</div>
+        <div>
+          <h4 class="service-title">White-Glove Courier</h4>
+          <p class="service-desc">Insured temperature-controlled transit with verified tamper seals.</p>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <div class="service-icon">↺</div>
+        <div>
+          <h4 class="service-title">Atelier Returns</h4>
+          <p class="service-desc">Complimentary 7-day pickup and size exchange service.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Order Tracking Lookup Bar -->
+    <div style="max-width: 640px; margin: 40px auto 0; text-align: center; padding-top: 30px; border-top: 1px solid var(--border-subtle);">
+      <span style="font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--champagne-gold); display: block; margin-bottom: 12px;">
+        Track Your Consignment
+      </span>
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="orderTrackInput" class="newsletter-input" 
+               placeholder="Enter AUREVANT Order Reference (e.g. AV-20261011-XXXXX)" style="flex: 1;">
+        <button type="button" class="btn-luxury" style="padding: 12px 24px;" onclick="lookupOrderTrack()">Track</button>
+      </div>
+      <div id="orderTrackResult"></div>
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       J. EDITORIAL JOURNAL
+       ============================================================================== -->
+  <section id="journal" class="journal-section">
+    <div class="section-header">
+      <span class="section-pretitle">The Sartorial Journal</span>
+      <h2 class="section-title">Stories of Distinction</h2>
+      <p class="section-desc">
+        Reflections on garment architecture, styling principles, and the preservation of rare textiles.
+      </p>
+    </div>
+
+    <div class="journal-grid">
+      
+      <div class="journal-card" onclick="showToast('Journal Edition: The Monochromatic Silhouette')">
+        <div class="journal-img-wrap">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Sartorial Suiting" class="journal-img">
+        </div>
+        <div class="journal-content">
+          <span class="journal-meta">Sartorial Styling • Volume IV</span>
+          <h3 class="journal-title">The Art of Proportion: Monochromatic Suiting</h3>
+          <p class="journal-excerpt">
+            Why pairing varying textures of obsidian black creates depth that single-tone garments cannot replicate.
+          </p>
+        </div>
+      </div>
+
+      <div class="journal-card" onclick="showToast('Journal Edition: Selvedge Denim Longevity')">
+        <div class="journal-img-wrap">
+          <img src="https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=800&q=80" alt="Selvedge Denim" class="journal-img">
+        </div>
+        <div class="journal-content">
+          <span class="journal-meta">Textile Craft • Volume II</span>
+          <h3 class="journal-title">Why Low-Tension Shuttle Loom Denim Matures With Age</h3>
+          <p class="journal-excerpt">
+            The metallurgy of vintage Toyoda looms in Okayama and the science behind unwashed plant-indigo dye fading.
+          </p>
+        </div>
+      </div>
+
+      <div class="journal-card" onclick="showToast('Journal Edition: Cashmere Preservation')">
+        <div class="journal-img-wrap">
+          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80" alt="Cashmere Care" class="journal-img">
+        </div>
+        <div class="journal-content">
+          <span class="journal-meta">Garment Care • Volume I</span>
+          <h3 class="journal-title">Preserving Double-Faced Cashmere & Egyptian Cotton</h3>
+          <p class="journal-excerpt">
+            The seasonal rotation protocols, cedar storage methods, and steam procedures recommended by European bespoke tailors.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==============================================================================
+       K. PREMIUM FOOTER
+       ============================================================================== -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      
+      <!-- Brand Details -->
+      <div class="footer-brand-col">
+        <a href="#" class="brand-identity" style="align-items: flex-start; margin: 0;">
+          <span class="brand-wordmark" style="font-size: 1.4rem;">AUREVANT</span>
+          <span class="brand-subtext">HAUTE MAISON DE PARIS & MUMBAI</span>
+        </a>
+        <p class="footer-brand-lead">
+          Luxury menswear and bespoke designer clothing for individuals who demand uncompromising materiality and timeless restraint.
+        </p>
+        <div style="font-size: 0.74rem; color: var(--champagne-gold); line-height: 1.8;">
+          <div>Client Concierge: <strong>+91 (022) 4890 2600</strong></div>
+          <div>Private Inquiries: <strong>concierge@aurevant.com</strong></div>
+          <div style="color: var(--muted-stone); margin-top: 6px;">GSTIN: 27AABCA9999Z1Z5 (Registered Luxury Entity)</div>
+        </div>
+      </div>
+
+      <!-- Atelier & Client Care -->
+      <div>
+        <h4 class="footer-col-title">Client Concierge</h4>
+        <ul class="footer-links-list">
+          <li><a href="#service-strip">Track Your Consignment</a></li>
+          <li><a href="javascript:void(0)" onclick="openSizeGuide()">Sartorial Size Guide</a></li>
+          <li><a href="javascript:void(0)" onclick="openPolicyModal('Shipping & White-Glove Delivery', getShippingPolicyContent())">Shipping & Delivery</a></li>
+          <li><a href="javascript:void(0)" onclick="openPolicyModal('Returns & Atelier Exchanges', getReturnsPolicyContent())">Returns & Exchanges</a></li>
+          <li><a href="javascript:void(0)" onclick="openAdminModal()">Maison Director Portal</a></li>
+        </ul>
+      </div>
+
+      <!-- The Collections -->
+      <div>
+        <h4 class="footer-col-title">The Collections</h4>
+        <ul class="footer-links-list">
+          <li><a href="javascript:void(0)" onclick="setCategoryFilter('t-shirts')">Signature Mercerised Tees</a></li>
+          <li><a href="javascript:void(0)" onclick="setCategoryFilter('shirts')">Thomas Mason Poplin Shirts</a></li>
+          <li><a href="javascript:void(0)" onclick="setCategoryFilter('denim')">14oz Japanese Selvedge</a></li>
+          <li><a href="javascript:void(0)" onclick="setCategoryFilter('outerwear')">Double-Faced Cashmere</a></li>
+          <li><a href="javascript:void(0)" onclick="openProductDetail('av-out-01')">Numbered Private Releases</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal & Newsletter -->
+      <div>
+        <h4 class="footer-col-title">The Private Ledger</h4>
+        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">
+          Receive confidential notices of private allocations and seasonal capsule unveilings.
+        </p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Your invitation has been dispatched to your email.'); this.reset();">
+          <input type="email" required placeholder="Enter private email address" class="newsletter-input">
+          <button type="submit" class="btn-luxury" style="padding: 10px; font-size: 0.72rem;">Enroll in Ledger</button>
+        </form>
+
+        <div style="margin-top: 24px; display: flex; gap: 16px; font-size: 0.72rem;">
+          <a href="javascript:void(0)" onclick="openPolicyModal('Privacy Charter', getPrivacyPolicyContent())" style="color: var(--muted-stone);">Privacy Charter</a>
+          <span style="color: var(--muted-stone);">•</span>
+          <a href="javascript:void(0)" onclick="openPolicyModal('Terms of Acquisition', getTermsContent())" style="color: var(--muted-stone);">Terms</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Legal Bar -->
+    <div class="footer-bottom-bar">
+      <div>© 2026 AUREVANT HAUTE MAISON. ALL RIGHTS RESERVED.</div>
+      <div>DISTINCTION IS EARNED. NOT MADE FOR EVERYONE.</div>
+      <div>REGISTERED ATELIER: MUMBAI • NEW DELHI • PARIS</div>
+    </div>
+  </footer>
+
+  <!-- ==============================================================================
+       PRODUCT DETAIL MODAL / PDP VIEW
+       ============================================================================== -->
+  <div id="productDetailModal" class="modal-overlay" onclick="closeProductDetail()">
+    <div class="pdp-window" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeProductDetail()">✕</button>
+
+      <!-- Gallery Column -->
+      <div class="pdp-gallery-col">
+        <img id="pdpMainImg" src="" alt="Garment View" class="pdp-main-image">
+        <div id="pdpThumbnails" class="pdp-thumbs-row">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Info Column -->
+      <div class="pdp-info-col">
+        <span id="pdpBadge" class="pdp-badge-tag">Permanent Collection</span>
+        <span id="pdpCategory" style="font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted-stone); margin-bottom: 4px;">Category</span>
+        <h2 id="pdpTitle" class="pdp-title">Product Title</h2>
+        <div id="pdpPrice" class="pdp-price">₹0</div>
+
+        <p id="pdpDescription" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 24px;">
+          Product description
+        </p>
+
+        <!-- Size Selection -->
+        <div class="pdp-section-label">
+          <span>Select Size</span>
+          <span class="size-guide-trigger" onclick="openSizeGuide()">Size Measurement Guide</span>
+        </div>
+        <div id="pdpSizeSelector" class="pdp-size-selector">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Indian PIN Code Delivery Checker -->
+        <div class="pincode-box">
+          <div class="pdp-section-label" style="margin-bottom: 2px;">
+            <span>Delivery & COD Eligibility Checker</span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--muted-stone);">
+            Enter your 6-digit Indian PIN code to check white-glove courier timeline and COD eligibility.
+          </p>
+          <div class="pincode-input-group">
+            <input type="text" id="pincodeCheckInput" class="pincode-input" maxlength="6" placeholder="e.g. 110001, 400001, 560001">
+            <button type="button" class="pincode-btn" onclick="checkDeliveryPincode()">Verify</button>
+          </div>
+          <div id="pincodeResultBox" class="pincode-result-msg"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="pdp-cta-row">
+          <button type="button" class="btn-add-bag" onclick="addCurrentPdpToBag()">
+            + Add To Bag
+          </button>
+          <button type="button" class="btn-buy-now" onclick="buyNowDirect()">
+            Direct Checkout
+          </button>
+        </div>
+
+        <!-- Accordions -->
+        <div class="pdp-accordion">
+          <div class="accordion-tab active" id="tabFabric">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('tabFabric')">
+              <span>Fabric & Provenance</span>
+              <span>▼</span>
+            </button>
+            <div class="accordion-body" id="pdpFabricText">
+              100% natural long-staple fibers.
+            </div>
+          </div>
+
+          <div class="accordion-tab" id="tabFit">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('tabFit')">
+              <span>Fit & Proportions</span>
+              <span>▼</span>
+            </button>
+            <div class="accordion-body" id="pdpFitText">
+              Tailored European continental drape.
+            </div>
+          </div>
+
+          <div class="accordion-tab" id="tabCare">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('tabCare')">
+              <span>Garment Care</span>
+              <span>▼</span>
+            </button>
+            <div class="accordion-body" id="pdpCareText">
+              Specialist dry clean only.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       SHOPPING BAG (CART DRAWER)
+       ============================================================================== -->
+  <div id="cartDrawerOverlay" class="cart-drawer-overlay" onclick="closeCartDrawer()">
+    <div class="cart-drawer" onclick="event.stopPropagation()">
+      <div class="cart-drawer-header">
+        <h3 class="cart-drawer-title">Your Shopping Bag</h3>
+        <button type="button" class="modal-close-btn" style="position: static;" onclick="closeCartDrawer()">✕</button>
+      </div>
+
+      <!-- Items List -->
+      <div id="cartItemsContainer" class="cart-items-container">
+        <!-- Rendered via app.js -->
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="cart-drawer-footer">
+        <div class="cart-total-row">
+          <span>Atelier Subtotal</span>
+          <span id="cartSubtotalDisplay">₹0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>White-Glove Insured Courier</span>
+          <span style="color: var(--champagne-gold);">Complimentary</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total Valuation</span>
+          <span id="cartGrandTotalDisplay" class="amt">₹0</span>
+        </div>
+
+        <button type="button" class="btn-luxury" style="width: 100%; margin-top: 16px; padding: 16px;" onclick="openCheckout()">
+          Proceed to Secure Checkout →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       INDIAN CHECKOUT & PAYMENT MODAL (UPI, Cards, Netbanking, COD)
+       ============================================================================== -->
+  <div id="checkoutModal" class="modal-overlay" onclick="closeCheckout()">
+    <div class="checkout-window" onclick="event.stopPropagation()">
+      
+      <div class="checkout-header">
+        <span style="font-family: var(--font-serif); font-size: 1.1rem; letter-spacing: 0.18em; color: var(--champagne-gold);">
+          AUREVANT SECURE CHECKOUT
+        </span>
+        <button type="button" class="modal-close-btn" style="position: static;" onclick="closeCheckout()">✕</button>
+      </div>
+
+      <!-- Steps Wizard -->
+      <div class="checkout-steps-bar">
+        <div class="checkout-step-pill active" id="chkStep1Pill">1. Address & Logistics</div>
+        <div class="checkout-step-pill" id="chkStep2Pill">2. Payment Method</div>
+        <div class="checkout-step-pill" id="chkStep3Pill">3. Receipt & Confirmation</div>
+      </div>
+
+      <div class="checkout-body">
+        
+        <!-- STEP 1: INDIAN DELIVERY ADDRESS -->
+        <div id="chkViewStep1">
+          <div class="checkout-split-layout">
+            
+            <div>
+              <h3 style="font-size: 1.05rem; margin-bottom: 20px; color: var(--warm-ivory);">Recipient Credentials & Delivery Address</h3>
+
+              <div class="form-grid-row">
+                <div class="input-block">
+                  <label class="input-label">Full Name *</label>
+                  <input type="text" id="chkFullName" class="luxury-input" value="Siddharth Singhania" required>
+                </div>
+                <div class="input-block">
+                  <label class="input-label">Mobile Phone (+91) *</label>
+                  <input type="tel" id="chkPhone" class="luxury-input" value="+91 98201 88420" required>
+                </div>
+              </div>
+
+              <div class="input-block">
+                <label class="input-label">Private Email Address *</label>
+                <input type="email" id="chkEmail" class="luxury-input" value="siddharth.singhania@heritage.in" required>
+              </div>
+
+              <div class="input-block">
+                <label class="input-label">Residence / Estate / Apartment *</label>
+                <input type="text" id="chkAddress" class="luxury-input" value="Penthouse 48, Samudra Mahal, Dr. Annie Besant Road, Worli" required>
+              </div>
+
+              <div class="form-grid-row">
+                <div class="input-block">
+                  <label class="input-label">PIN Code (6 Digits) *</label>
+                  <input type="text" id="chkPincode" class="luxury-input" maxlength="6" value="400018" required>
+                </div>
+                <div class="input-block">
+                  <label class="input-label">Landmark / Gate</label>
+                  <input type="text" id="chkLandmark" class="luxury-input" value="Opposite Nehru Centre">
+                </div>
+              </div>
+
+              <div class="form-grid-row">
+                <div class="input-block">
+                  <label class="input-label">City *</label>
+                  <input type="text" id="chkCity" class="luxury-input" value="Mumbai" required>
+                </div>
+                <div class="input-block">
+                  <label class="input-label">State *</label>
+                  <input type="text" id="chkState" class="luxury-input" value="Maharashtra" required>
+                </div>
+              </div>
+
+              <button type="button" class="btn-luxury" style="width: 100%; margin-top: 14px;" onclick="validateAndProceedToPayment()">
+                Continue to Payment Methods →
+              </button>
+            </div>
+
+            <!-- Order Summary Sidebar in Checkout -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 24px; height: fit-content;">
+              <h4 style="font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--warm-ivory); margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+                Consignment Summary
+              </h4>
+              <div id="chkSummaryList">
+                <!-- Rendered via JS -->
+              </div>
+              <div style="border-top: 1px solid var(--border-subtle); padding-top: 14px; margin-top: 14px;">
+                <div class="cart-total-row">
+                  <span>Subtotal</span>
+                  <span id="chkSummarySubtotal">₹0</span>
+                </div>
+                <div class="cart-total-row">
+                  <span>Insured Courier</span>
+                  <span style="color: var(--champagne-gold);">Complimentary</span>
+                </div>
+                <div class="cart-total-row grand-total">
+                  <span>Total</span>
+                  <span id="chkSummaryTotal" class="amt">₹0</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- STEP 2: PAYMENT METHODS (UPI, CARDS, NETBANKING, COD) -->
+        <div id="chkViewStep2" style="display: none;">
+          <div class="checkout-split-layout">
+            
+            <div>
+              <h3 style="font-size: 1.05rem; margin-bottom: 16px; color: var(--warm-ivory);">Select Payment Gateway</h3>
+
+              <!-- Payment Tabs -->
+              <div class="payment-tabs">
+                <button type="button" id="payTab-upi" class="pay-tab-btn active" onclick="selectPaymentMethod('UPI')">
+                  <span style="font-size: 1.1rem;">⚡</span>
+                  <span>UPI Gateway</span>
+                </button>
+                <button type="button" id="payTab-card" class="pay-tab-btn" onclick="selectPaymentMethod('CARD')">
+                  <span style="font-size: 1.1rem;">💳</span>
+                  <span>Cards</span>
+                </button>
+                <button type="button" id="payTab-netbanking" class="pay-tab-btn" onclick="selectPaymentMethod('NETBANKING')">
+                  <span style="font-size: 1.1rem;">🏛</span>
+                  <span>Net Banking</span>
+                </button>
+                <button type="button" id="payTab-cod" class="pay-tab-btn" onclick="selectPaymentMethod('COD')">
+                  <span style="font-size: 1.1rem;">⚜</span>
+                  <span>Cash on Delivery</span>
+                </button>
+              </div>
+
+              <!-- UPI Panel -->
+              <div id="payPanel-upi" class="pay-panel active">
+                <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                  <button type="button" class="pdp-size-btn active" onclick="showToast('Google Pay UPI selected')">Google Pay</button>
+                  <button type="button" class="pdp-size-btn" onclick="showToast('PhonePe selected')">PhonePe</button>
+                  <button type="button" class="pdp-size-btn" onclick="showToast('Paytm selected')">Paytm</button>
+                  <button type="button" class="pdp-size-btn" onclick="showToast('BHIM selected')">BHIM</button>
+                </div>
+                <div class="input-block">
+                  <label class="input-label">Or Enter Direct Virtual Payment Address (UPI ID)</label>
+                  <input type="text" class="luxury-input" placeholder="singhania@okhdfcbank" value="siddharth@okaxis">
+                </div>
+                <p style="font-size: 0.76rem; color: var(--muted-stone);">
+                  Instant settlement via NPCI Unified Payments Interface with 256-bit bank verification.
+                </p>
+              </div>
+
+              <!-- Card Panel -->
+              <div id="payPanel-card" class="pay-panel">
+                <div class="input-block">
+                  <label class="input-label">Cardholder Name</label>
+                  <input type="text" class="luxury-input" value="Siddharth Singhania">
+                </div>
+                <div class="input-block">
+                  <label class="input-label">16-Digit Card Number (RuPay, Visa, Mastercard, Amex)</label>
+                  <input type="text" class="luxury-input" maxlength="19" placeholder="4532 •••• •••• 8842" value="4532 8901 2291 8842">
+                </div>
+                <div class="form-grid-row">
+                  <div class="input-block">
+                    <label class="input-label">Expiry (MM/YY)</label>
+                    <input type="text" class="luxury-input" placeholder="12/28" value="12/28">
+                  </div>
+                  <div class="input-block">
+                    <label class="input-label">CVV / Security Code</label>
+                    <input type="password" class="luxury-input" maxlength="4" placeholder="884" value="884">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Net Banking Panel -->
+              <div id="payPanel-netbanking" class="pay-panel">
+                <label class="input-label">Select Registered Bank</label>
+                <select class="luxury-input" style="width: 100%; margin-top: 6px;">
+                  <option value="HDFC">HDFC Bank (Private Banking)</option>
+                  <option value="ICICI">ICICI Bank Wealth Management</option>
+                  <option value="SBI">State Bank of India</option>
+                  <option value="AXIS">Axis Bank Burgundy</option>
+                  <option value="KOTAK">Kotak Mahindra Privy League</option>
+                </select>
+                <p style="font-size: 0.76rem; color: var(--muted-stone); margin-top: 10px;">
+                  You will be directed to your bank's authenticated gateway for 2-Factor OTP verification.
+                </p>
+              </div>
+
+              <!-- Cash on Delivery (COD) Panel -->
+              <div id="payPanel-cod" class="pay-panel">
+                <h4 style="font-size: 0.9rem; color: var(--champagne-gold); margin-bottom: 8px;">
+                  Cash on Delivery Protocol
+                </h4>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px;">
+                  To maintain discretion and security, our white-glove armored courier will verify OTP upon arrival and accept certified cash or card-swipe on delivery.
+                </p>
+                <div style="background: rgba(198, 168, 117, 0.08); border: 1px solid var(--border-subtle); padding: 12px; font-size: 0.76rem; color: var(--warm-ivory);">
+                  Notice: Orders placed with COD are registered with status <strong>"Payment Pending — To Be Collected on Delivery"</strong> and are subject to telephone verification.
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 14px; margin-top: 24px;">
+                <button type="button" class="btn-luxury-outline" onclick="setCheckoutStep(1)" style="flex: 1;">
+                  ← Back to Address
+                </button>
+                <button type="button" id="btnSubmitOrder" class="btn-luxury" onclick="processOrderPayment()" style="flex: 2;">
+                  Authorize & Place Order
+                </button>
+              </div>
+            </div>
+
+            <!-- Recipient Preview in Step 2 -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 24px; height: fit-content;">
+              <h4 style="font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--warm-ivory); margin-bottom: 12px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                Consignment Address
+              </h4>
+              <div id="chkRecipientPreview" style="font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary); margin-bottom: 20px;">
+                <!-- Filled via JS -->
+              </div>
+              <div style="font-size: 0.72rem; color: var(--muted-stone); line-height: 1.5;">
+                ✦ Hand-delivered in tamper-proof seal<br>
+                ✦ Insured against transit loss<br>
+                ✦ Signed delivery verification
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- STEP 3: ORDER CONFIRMATION & RECEIPT -->
+        <div id="chkViewStep3" style="display: none;">
+          <div class="order-receipt-card">
+            <!-- Heraldic Receipt Monogram -->
+            <svg class="receipt-crest" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 4 C68 4 84 14 84 34 C84 62 50 96 50 96 C50 96 16 62 16 34 C16 14 32 4 50 4 Z" stroke="#C6A875" stroke-width="2.5"/>
+              <polygon points="50,22 66,62 34,62" fill="none" stroke="#C6A875" stroke-width="2.5"/>
+              <line x1="39" y1="52" x2="61" y2="52" stroke="#C6A875" stroke-width="2"/>
+              <polyline points="34,44 50,78 66,44" fill="none" stroke="#C6A875" stroke-width="2.5"/>
+            </svg>
+
+            <span style="font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--champagne-gold); display: block;">
+              MAISON AUREVANT • REGISTERED CONSIGNMENT
+            </span>
+
+            <h2 style="font-size: 1.8rem; margin: 10px 0 6px; color: var(--warm-ivory);">
+              Order Successfully Commissioned
+            </h2>
+
+            <p style="font-size: 0.9rem; color: var(--text-secondary); max-width: 580px; margin: 0 auto;">
+              Thank you, <span id="receiptCustomerName">Patron</span>. Your garment request has been inscribed into our atelier records. 
+              Our dispatch concierge is preparing your consignment in our signature cedar presentation box.
+            </p>
+
+            <div class="receipt-order-id" id="receiptOrderId">
+              AV-20261011-8842
+            </div>
+
+            <div style="max-width: 480px; margin: 0 auto 30px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 18px; text-align: left; font-size: 0.82rem; line-height: 1.8;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--muted-stone);">Payment Method:</span>
+                <strong id="receiptPaymentMethod" style="color: var(--warm-ivory);">UPI (Verified)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--muted-stone);">Total Valuation:</span>
+                <strong id="receiptTotalAmount" style="color: var(--champagne-gold);">₹0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--muted-stone);">Estimated Delivery:</span>
+                <strong id="receiptEstimatedDate" style="color: var(--warm-ivory);">Within 2-3 Business Days</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; justify-content: center;">
+              <button type="button" class="btn-luxury" onclick="closeCheckout(); showToast('Digital invoice receipt downloaded.');">
+                Download Official Invoice
+              </button>
+              <button type="button" class="btn-luxury-outline" onclick="closeCheckout()">
+                Continue Browsing
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       SARTORIAL SIZE GUIDE MODAL
+       ============================================================================== -->
+  <div id="sizeGuideModal" class="modal-overlay" onclick="closeSizeGuide()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); max-width: 680px; width: 100%; padding: 36px; position: relative;" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeSizeGuide()">✕</button>
+
+      <span class="section-pretitle">Measurement Standard</span>
+      <h3 style="font-size: 1.4rem; color: var(--warm-ivory); margin-bottom: 8px;">AUREVANT Size Guide</h3>
+      <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 20px;">
+        All measurements in inches (and cm). Our garments follow a tailored European continental cut. If between sizes, we recommend selecting the larger size for a relaxed drape.
+      </p>
+
+      <table class="size-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Chest</th>
+            <th>Shoulder</th>
+            <th>Length</th>
+            <th>Waist</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>S / 38</strong></td>
+            <td>38" (96 cm)</td>
+            <td>17.5" (44 cm)</td>
+            <td>28.0" (71 cm)</td>
+            <td>30–31" (78 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>M / 40</strong></td>
+            <td>40" (102 cm)</td>
+            <td>18.2" (46 cm)</td>
+            <td>28.5" (72 cm)</td>
+            <td>32–33" (84 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>L / 42</strong></td>
+            <td>42" (107 cm)</td>
+            <td>19.0" (48 cm)</td>
+            <td>29.2" (74 cm)</td>
+            <td>34–35" (89 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>XL / 44</strong></td>
+            <td>44" (112 cm)</td>
+            <td>19.8" (50 cm)</td>
+            <td>30.0" (76 cm)</td>
+            <td>36–37" (94 cm)</td>
+          </tr>
+          <tr>
+            <td><strong>XXL / 46</strong></td>
+            <td>46" (117 cm)</td>
+            <td>20.5" (52 cm)</td>
+            <td>30.5" (77 cm)</td>
+            <td>38–39" (99 cm)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="font-size: 0.75rem; color: var(--muted-stone); text-align: center;">
+        Need personalized bespoke tailoring advice? Contact the private client desk: <strong>+91 (022) 4890 2600</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       LEGAL CHARTER MODAL (Privacy, Terms, Shipping, Returns)
+       ============================================================================== -->
+  <div id="policyModal" class="modal-overlay" onclick="closePolicyModal()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); max-width: 760px; width: 100%; max-height: 85vh; padding: 40px; position: relative; overflow-y: auto;" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closePolicyModal()">✕</button>
+      <h3 id="policyModalTitle" style="font-size: 1.4rem; color: var(--champagne-gold); margin-bottom: 20px;">Policy Title</h3>
+      <div id="policyModalContent" style="font-size: 0.85rem; line-height: 1.85; color: var(--text-secondary);">
+        <!-- Policy text inserted dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       ADMINISTRATION DASHBOARD MODAL
+       ============================================================================== -->
+  <div id="adminModal" class="modal-overlay" onclick="closeAdminModal()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); max-width: 980px; width: 100%; max-height: 90vh; padding: 36px; position: relative; overflow-y: auto;" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeAdminModal()">✕</button>
+
+      <!-- Admin Login Form -->
+      <div id="adminLoginForm">
+        <span class="section-pretitle">Authorized Personnel</span>
+        <h3 style="font-size: 1.3rem; margin-bottom: 8px;">Maison Director Portal</h3>
+        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 24px;">
+          Authenticate with your administrative credentials to manage atelier orders, fulfillment, and product allocations.
+        </p>
+        <form onsubmit="handleAdminLogin(event)" style="max-width: 400px;">
+          <div class="input-block">
+            <label class="input-label">Director Email</label>
+            <input type="email" id="adminEmailInput" class="luxury-input" value="admin@aurevant.com" required>
+          </div>
+          <div class="input-block">
+            <label class="input-label">Passcode</label>
+            <input type="password" id="adminPassInput" class="luxury-input" value="aurevant2026" required>
+          </div>
+          <button type="submit" class="btn-luxury" style="width: 100%; margin-top: 10px;">Enter Administrative Ledger</button>
+        </form>
+      </div>
+
+      <!-- Admin Dashboard View -->
+      <div id="adminDashboardView" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;">
+          <div>
+            <h3 style="font-size: 1.3rem; color: var(--warm-ivory);">Atelier Ledger & Order Management</h3>
+            <span style="font-size: 0.72rem; color: var(--champagne-gold);">Director: admin@aurevant.com (Active Session)</span>
+          </div>
+          <button type="button" class="btn-luxury-outline" style="padding: 6px 14px; font-size: 0.7rem;" onclick="adminLogout()">Logout</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
+            <thead>
+              <tr style="background: var(--bg-card); color: var(--champagne-gold); border-bottom: 1px solid var(--border-subtle);">
+                <th style="padding: 10px; text-align: left;">Order ID</th>
+                <th style="padding: 10px; text-align: left;">Patron & Location</th>
+                <th style="padding: 10px; text-align: left;">Valuation</th>
+                <th style="padding: 10px; text-align: left;">Payment Status</th>
+                <th style="padding: 10px; text-align: left;">Fulfillment</th>
+                <th style="padding: 10px; text-align: left;">Date</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTableBody">
+              <!-- Populated via app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="luxToast" class="lux-toast"></div>
+
+  <!-- Policy Content Helpers -->
+  <script>
+    function getShippingPolicyContent() {
+      return `
+        <h4 style="color: #fff; margin-bottom: 8px;">White-Glove Insured Courier Protocols</h4>
+        <p style="margin-bottom: 14px;">Maison AUREVANT provides complimentary insured delivery across all serviceable PIN codes in India. Consignments are packed in our signature cedar presentation box and secured with serialized security tamper seals.</p>
+        <h4 style="color: #fff; margin-bottom: 8px;">Delivery Timelines</h4>
+        <p style="margin-bottom: 14px;">- Metros (Mumbai, Delhi-NCR, Bengaluru, Hyderabad, Chennai, Kolkata): 1 to 2 Business Days.<br>
+        - Tier-1 & Tier-2 Regional Hubs: 2 to 4 Business Days.<br>
+        - Remote & Special Territories: 4 to 6 Business Days via dedicated air freight.</p>
+        <h4 style="color: #fff; margin-bottom: 8px;">Cash on Delivery (COD)</h4>
+        <p>Cash on Delivery is available for eligible orders up to ₹50,000 upon OTP verification. Orders exceeding ₹50,000 must be cleared via secure electronic payment gateways in adherence to Indian luxury retail compliance.</p>
+      `;
+    }
+
+    function getReturnsPolicyContent() {
+      return `
+        <h4 style="color: #fff; margin-bottom: 8px;">7-Day Atelier Exchange Privilege</h4>
+        <p style="margin-bottom: 14px;">Should a garment require a different size or proportion, we offer complimentary reverse courier pickup within 7 days of delivery.</p>
+        <h4 style="color: #fff; margin-bottom: 8px;">Garment Condition Requirements</h4>
+        <p style="margin-bottom: 14px;">Garments must remain unworn, unwashed, and undamaged, with all original security seals, spare buttons, and atelier tags intact. Tailored eveningwear and numbered limited pieces are subject to microscopic fabric inspection prior to exchange clearance.</p>
+      `;
+    }
+
+    function getPrivacyPolicyContent() {
+      return `
+        <h4 style="color: #fff; margin-bottom: 8px;">Confidentiality of the Patron</h4>
+        <p style="margin-bottom: 14px;">At Maison AUREVANT, client discretion is sacred. We never sell, lease, or distribute our patrons' personal records, sizing measurements, or transaction details to third-party commercial entities.</p>
+        <p>Payment information is processed directly by certified RBI-regulated payment gateways via 256-bit encryption. AUREVANT servers retain no raw credit card credentials.</p>
+      `;
+    }
+
+    function getTermsContent() {
+      return `
+        <h4 style="color: #fff; margin-bottom: 8px;">Terms of Atelier Commission</h4>
+        <p style="margin-bottom: 14px;">By placing an order on aurevant.com, patrons enter into a purchase agreement governed by the laws of India, subject to Mumbai jurisdiction.</p>
+        <p>Numbered private editions are strictly limited to the stated allocation. In the event of inventory exhaustion prior to payment clearing, full immediate refund will be issued.</p>
+      `;
+    }
+  </script>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>

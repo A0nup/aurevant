@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# LUIX Maison de Haute Couture - Server Launcher
+cd "$(dirname "$0")"
+echo "⚜ Starting Maison LUIX Haute Couture Server..."
+python3 server.py "$@"
+
