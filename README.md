@@ -80,8 +80,8 @@ The platform features an integrated **6-digit Indian PIN Code Logistics Engine**
 
 - Available via the navigation bar **"Director Portal"** or directly at **[http://localhost:8000/admin.html](http://localhost:8000/admin.html)**.
 - **Default Master Credentials:**
-  - **Director Email:** `admin@aurevant.com`
-  - **Passcode:** `aurevant2026`
+  - **Director Email:** ``
+  - **Passcode:** ``
 - **Capabilities:**
   - View all commissioned orders, customer contacts, and delivery addresses.
   - Update order fulfillment status (*Processing*, *Handcrafted*, *Dispatched*, *Delivered*, *Cancelled*).
