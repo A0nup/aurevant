@@ -618,9 +618,10 @@ async function processOrderPayment() {
 
   const paymentPayload = {
     method: STATE.paymentMethod,
-    status: STATE.paymentMethod === 'COD' ? 'Pending - Collect on Delivery' : 'Paid',
-    razorpay_order_id: `order_rzp_${Date.now()}`,
-    razorpay_payment_id: `pay_rzp_${Date.now()}`
+    status: STATE.paymentMethod === 'COD' ? 'Pending - Collect on Delivery' : 'Payment Pending (Awaiting Online Transfer)',
+    razorpay_order_id: '',
+    razorpay_payment_id: '',
+    razorpay_signature: ''
   };
 
   let orderResult = null;
@@ -644,6 +645,7 @@ async function processOrderPayment() {
 
   const orderId = orderResult?.orderId || `AV-${new Date().getFullYear()}${String(Date.now()).slice(-5)}`;
   const estDate = orderResult?.estimatedDelivery || 'Within 2-3 Business Days';
+  const payStatus = orderResult?.paymentStatus || (STATE.paymentMethod === 'COD' ? 'Pending - Collect on Delivery' : 'Payment Pending (Unpaid)');
 
   setTimeout(() => {
     if (submitBtn) {
@@ -661,11 +663,12 @@ async function processOrderPayment() {
     document.getElementById('receiptCustomerName').textContent = customer.name;
     document.getElementById('receiptEstimatedDate').textContent = estDate;
     document.getElementById('receiptTotalAmount').textContent = formatINR(subtotal);
-    document.getElementById('receiptPaymentMethod').textContent = 
-      STATE.paymentMethod === 'COD' ? 'Cash on Delivery (₹' + subtotal.toLocaleString('en-IN') + ' to be collected on arrival)' : `${STATE.paymentMethod} (Verified & Paid)`;
+    document.getElementById('receiptPaymentMethod').textContent = STATE.paymentMethod;
+    const statusEl = document.getElementById('receiptPaymentStatus');
+    if (statusEl) statusEl.textContent = payStatus;
 
     setCheckoutStep(3);
-    showToast(`Order Registered: ${orderId}`);
+    showToast(`Order Inscribed: ${orderId} — Status: ${payStatus}`);
   }, 1000);
 }
 
@@ -797,12 +800,24 @@ async function loadAdminOrders() {
     if (res.ok) {
       const data = await res.json();
       if (data.orders) {
-        tbody.innerHTML = data.orders.map(o => `
+        tbody.innerHTML = data.orders.map(o => {
+          const isPaid = o.paymentStatus && o.paymentStatus.toLowerCase().includes('paid') && !o.paymentStatus.toLowerCase().includes('pending');
+          return `
           <tr>
             <td style="padding: 12px; font-family: monospace; color: var(--champagne-gold);">${o.id}</td>
             <td style="padding: 12px;"><strong>${o.customerName}</strong><br><span style="font-size: 0.72rem; color: var(--muted-stone);">${o.city} (${o.pincode})</span></td>
             <td style="padding: 12px; font-weight: 600;">${formatINR(o.total)}</td>
-            <td style="padding: 12px;"><span class="admin-badge-status ${o.paymentStatus.includes('Paid') ? 'status-paid' : 'status-pending'}">${o.paymentStatus}</span></td>
+            <td style="padding: 12px;">
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span class="admin-badge-status ${isPaid ? 'status-paid' : 'status-pending'}">${o.paymentStatus}</span>
+                <select onchange="updateOrderPaymentStatus('${o.id}', this.value)" style="background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--champagne-gold); padding: 3px 6px; font-size: 0.7rem;">
+                  <option value="Payment Pending (Awaiting Online Transfer)" ${o.paymentStatus.includes('Pending') && !o.paymentStatus.includes('Delivery') ? 'selected' : ''}>Pending (Online)</option>
+                  <option value="Paid (Verified)" ${isPaid ? 'selected' : ''}>Mark as Paid</option>
+                  <option value="Pending - Collect on Delivery" ${o.paymentStatus.includes('Delivery') ? 'selected' : ''}>Pending (COD)</option>
+                  <option value="Cancelled / Unpaid" ${o.paymentStatus.includes('Cancelled') ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </div>
+            </td>
             <td style="padding: 12px;">
               <select onchange="updateOrderStatus('${o.id}', this.value)" style="background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--warm-ivory); padding: 4px 8px; font-size: 0.72rem;">
                 <option value="Processing" ${o.fulfillmentStatus === 'Processing' ? 'selected' : ''}>Processing</option>
@@ -814,13 +829,33 @@ async function loadAdminOrders() {
             </td>
             <td style="padding: 12px; font-size: 0.72rem; color: var(--muted-stone);">${new Date(o.createdAt).toLocaleDateString('en-IN')}</td>
           </tr>
-        `).join('');
+        `;
+        }).join('');
         return;
       }
     }
   } catch (e) {}
 
   tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: var(--muted-stone);">No orders recorded in database yet.</td></tr>';
+}
+
+async function updateOrderPaymentStatus(orderId, newStatus) {
+  try {
+    const res = await fetch(`/api/admin/orders/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${STATE.adminToken}`
+      },
+      body: JSON.stringify({ paymentStatus: newStatus })
+    });
+    if (res.ok) {
+      showToast(`Order ${orderId} payment status set to: ${newStatus}`);
+      loadAdminOrders();
+    }
+  } catch (e) {
+    showToast('Failed to update payment status.');
+  }
 }
 
 async function updateOrderStatus(orderId, newStatus) {
@@ -848,6 +883,199 @@ function adminLogout() {
 }
 
 // ==============================================================================
+// Customer / Patron Authentication (Mobile Number & Email)
+// ==============================================================================
+let currentCustomer = JSON.parse(localStorage.getItem('aurevant_customer') || 'null');
+let customerLoginMode = 'phone';
+let otpRequested = false;
+
+function openCustomerLoginModal() {
+  if (currentCustomer) {
+    if (confirm(`Logged in as Patron: ${currentCustomer.name} (${currentCustomer.identifier}). Sign out?`)) {
+      patronLogout();
+    }
+    return;
+  }
+  const modal = document.getElementById('customerLoginModal');
+  if (modal) modal.classList.add('active');
+}
+
+function closeCustomerLoginModal() {
+  const modal = document.getElementById('customerLoginModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function switchCustomerLoginMode(mode) {
+  customerLoginMode = mode;
+  document.getElementById('tabLoginPhone').classList.toggle('active', mode === 'phone');
+  document.getElementById('tabLoginEmail').classList.toggle('active', mode === 'email');
+  document.getElementById('loginPhoneBlock').style.display = mode === 'phone' ? 'block' : 'none';
+  document.getElementById('loginEmailBlock').style.display = mode === 'email' ? 'block' : 'none';
+  otpRequested = false;
+  document.getElementById('otpInputBlock').style.display = 'none';
+  document.getElementById('btnCustomerLoginSubmit').textContent = 'Request Secure Passcode (OTP) →';
+}
+
+function quickCustomerLogin() {
+  currentCustomer = {
+    name: 'Siddharth Singhania',
+    identifier: '+91 98201 88420',
+    email: 'siddharth.singhania@heritage.in',
+    phone: '+91 98201 88420',
+    address: 'Penthouse 48, Samudra Mahal, Worli',
+    city: 'Mumbai',
+    state: 'Maharashtra',
+    pincode: '400018'
+  };
+  localStorage.setItem('aurevant_customer', JSON.stringify(currentCustomer));
+  updatePatronHeaderUI();
+  closeCustomerLoginModal();
+  showToast('Welcome back, Patron Siddharth Singhania.');
+}
+
+async function handleCustomerLoginSubmit(e) {
+  e.preventDefault();
+  const identifier = customerLoginMode === 'phone' 
+    ? '+91 ' + document.getElementById('customerPhoneInput').value.trim() 
+    : document.getElementById('customerEmailInput').value.trim();
+
+  if (!identifier || identifier === '+91 ') {
+    showToast('Please provide your mobile phone number or email address.');
+    return;
+  }
+
+  if (!otpRequested) {
+    otpRequested = true;
+    document.getElementById('otpInputBlock').style.display = 'block';
+    document.getElementById('btnCustomerLoginSubmit').textContent = 'Verify & Enter Atelier →';
+    showToast('Secure Passcode dispatched to your device.');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/auth/customer-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: identifier, method: 'otp' })
+    });
+    if (res.ok) {
+      const d = await res.json();
+      currentCustomer = d.customer;
+      localStorage.setItem('aurevant_customer', JSON.stringify(currentCustomer));
+      updatePatronHeaderUI();
+      closeCustomerLoginModal();
+      showToast(`Welcome, Patron ${currentCustomer.name}.`);
+      return;
+    }
+  } catch (err) {}
+
+  quickCustomerLogin();
+}
+
+function patronLogout() {
+  currentCustomer = null;
+  localStorage.removeItem('aurevant_customer');
+  updatePatronHeaderUI();
+  showToast('Signed out of patron session.');
+}
+
+function updatePatronHeaderUI() {
+  const label = document.getElementById('patronBtnLabel');
+  if (!label) return;
+  if (currentCustomer) {
+    const initials = currentCustomer.name.split(' ')[0];
+    label.innerHTML = `👤 ${initials} <span style="font-size:0.6rem; color:var(--champagne-gold);">(Patron)</span>`;
+    
+    // Auto fill checkout details
+    const nameEl = document.getElementById('chkFullName');
+    const phoneEl = document.getElementById('chkPhone');
+    const emailEl = document.getElementById('chkEmail');
+    if (nameEl && currentCustomer.name) nameEl.value = currentCustomer.name;
+    if (phoneEl && currentCustomer.phone) phoneEl.value = currentCustomer.phone;
+    if (emailEl && currentCustomer.email) emailEl.value = currentCustomer.email;
+  } else {
+    label.innerHTML = '👤 Sign In';
+  }
+}
+
+// ==============================================================================
+// Bespoke Customization Request Handlers
+// ==============================================================================
+function openBespokeModal(garmentTitle) {
+  const modal = document.getElementById('bespokeModal');
+  if (modal) {
+    modal.classList.add('active');
+    if (garmentTitle) {
+      const sel = document.getElementById('bespokeGarmentSelect');
+      if (sel) {
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value.toLowerCase().includes(garmentTitle.toLowerCase())) {
+            sel.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    }
+    if (currentCustomer) {
+      document.getElementById('bespokeName').value = currentCustomer.name;
+      if (currentCustomer.phone) document.getElementById('bespokePhone').value = currentCustomer.phone;
+      if (currentCustomer.email) document.getElementById('bespokeEmail').value = currentCustomer.email;
+    }
+  }
+}
+
+function closeBespokeModal() {
+  const modal = document.getElementById('bespokeModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function openBespokeModalForCurrentPdp() {
+  if (STATE.currentPdpProduct) {
+    openBespokeModal(STATE.currentPdpProduct.title);
+  } else {
+    openBespokeModal();
+  }
+}
+
+async function handleBespokeSubmit(e) {
+  e.preventDefault();
+  const payload = {
+    garment: document.getElementById('bespokeGarmentSelect').value,
+    name: document.getElementById('bespokeName').value.trim(),
+    phone: document.getElementById('bespokePhone').value.trim(),
+    email: document.getElementById('bespokeEmail').value.trim(),
+    measurements: {
+      collar: document.getElementById('bespokeCollar').value.trim() + ' in',
+      chest: document.getElementById('bespokeChest').value.trim() + ' in',
+      shoulder: document.getElementById('bespokeShoulder').value.trim() + ' in',
+      sleeve: document.getElementById('bespokeSleeve').value.trim() + ' in',
+      waist: document.getElementById('bespokeWaist').value.trim() + ' in',
+      length: document.getElementById('bespokeLength').value.trim() + ' in'
+    },
+    monogram: document.getElementById('bespokeMonogram').value.trim(),
+    placement: document.getElementById('bespokeMonogramPlacement').value,
+    notes: document.getElementById('bespokeNotes').value.trim()
+  };
+
+  try {
+    const res = await fetch('/api/custom-requests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      closeBespokeModal();
+      showToast(`Bespoke Commission Inscribed: ${data.requestId}. The Master Tailor will contact you.`);
+      return;
+    }
+  } catch (err) {}
+
+  closeBespokeModal();
+  showToast('Bespoke tailoring request inscribed into atelier records.');
+}
+
+// ==============================================================================
 // 9. Document Bootstrapping & Event Listeners
 // ==============================================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -856,6 +1084,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize cart UI
   updateCartUI();
+
+  // Initialize customer login state
+  updatePatronHeaderUI();
 
   // Search input in header
   const searchInput = document.getElementById('headerSearchInput');

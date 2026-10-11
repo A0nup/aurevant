@@ -296,3 +296,4 @@ elif view_mode == "💳 Razorpay Gateway Architecture":
     ```
     """)
     st.markdown("</div>", unsafe_allow_html=True)
+

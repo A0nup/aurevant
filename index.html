@@ -35,6 +35,7 @@
           <li><a href="#" class="nav-link active">Home</a></li>
           <li><a href="#featured-collection" class="nav-link">Shop</a></li>
           <li><a href="#category-collections" class="nav-link">Collections</a></li>
+          <li><a href="javascript:void(0)" onclick="openBespokeModal()" class="nav-link" style="color: var(--champagne-gold);">✂ Bespoke Fit</a></li>
           <li><a href="#the-house" class="nav-link">The House</a></li>
           <li><a href="#journal" class="nav-link">Journal</a></li>
         </ul>
@@ -64,22 +65,22 @@
         <span class="brand-subtext">HAUTE MAISON • PARIS & MUMBAI</span>
       </a>
 
-      <!-- Right: Search, Account & Shopping Bag -->
+      <!-- Right: Search, Patron Account, Bag & Director Portal -->
       <div class="header-utilities">
         <!-- Live Catalog Search Input -->
         <div style="position: relative; display: flex; align-items: center;">
           <input type="text" id="headerSearchInput" class="newsletter-input" 
                  placeholder="Search garments, silks, denims..." 
-                 style="padding: 6px 12px; font-size: 0.72rem; width: 180px; height: 32px; border-radius: 1px;">
+                 style="padding: 6px 12px; font-size: 0.72rem; width: 170px; height: 32px; border-radius: 1px;">
         </div>
 
-        <!-- Account / Concierge -->
-        <a href="javascript:void(0)" class="util-btn" onclick="openAdminModal()" title="Client Desk / Admin">
-          <span>Desk</span>
-        </a>
+        <!-- Patron Account (Email or Mobile Phone Login) -->
+        <button type="button" class="util-btn" id="headerPatronBtn" onclick="openCustomerLoginModal()" title="Patron Account (Sign in via Email or Mobile)">
+          <span id="patronBtnLabel">👤 Sign In</span>
+        </button>
 
         <!-- Order Track -->
-        <a href="#service-strip" class="util-btn" title="Track Order">
+        <a href="#service-strip" class="util-btn" title="Track Consignment">
           <span>Track</span>
         </a>
 
@@ -89,9 +90,9 @@
           <span id="cartCounter" class="cart-counter" style="display: none;">0</span>
         </button>
 
-        <!-- Admin Portal Badge -->
-        <a href="javascript:void(0)" class="admin-portal-pill" onclick="openAdminModal()">
-          Director Portal
+        <!-- Admin Portal Direct Link -->
+        <a href="admin.html" class="admin-portal-pill" title="Open Maison Director Control Panel (Edit Clothes, Prices & Settings)">
+          ⚜ DIRECTOR PORTAL ↗
         </a>
       </div>
 
@@ -613,6 +614,11 @@
           </button>
         </div>
 
+        <!-- Bespoke Customization Button -->
+        <button type="button" class="btn-luxury-outline" style="width: 100%; margin: 10px 0 16px; padding: 12px; font-size: 0.74rem;" onclick="openBespokeModalForCurrentPdp()">
+          ✂ Request Bespoke Sizing & Monogram Embroidery
+        </button>
+
         <!-- Accordions -->
         <div class="pdp-accordion">
           <div class="accordion-tab active" id="tabFabric">
@@ -941,10 +947,14 @@
               AV-20261011-8842
             </div>
 
-            <div style="max-width: 480px; margin: 0 auto 30px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 18px; text-align: left; font-size: 0.82rem; line-height: 1.8;">
+            <div style="max-width: 480px; margin: 0 auto 20px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 18px; text-align: left; font-size: 0.82rem; line-height: 1.8;">
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--muted-stone);">Payment Method:</span>
-                <strong id="receiptPaymentMethod" style="color: var(--warm-ivory);">UPI (Verified)</strong>
+                <strong id="receiptPaymentMethod" style="color: var(--warm-ivory);">UPI</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--muted-stone);">Payment Status:</span>
+                <strong id="receiptPaymentStatus" style="color: var(--champagne-gold);">Payment Pending (Unpaid)</strong>
               </div>
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--muted-stone);">Total Valuation:</span>
@@ -954,6 +964,11 @@
                 <span style="color: var(--muted-stone);">Estimated Delivery:</span>
                 <strong id="receiptEstimatedDate" style="color: var(--warm-ivory);">Within 2-3 Business Days</strong>
               </div>
+            </div>
+
+            <!-- Clear Payment Status Explanation Note -->
+            <div id="receiptPendingNotice" style="max-width: 480px; margin: 0 auto 24px; padding: 14px 18px; background: rgba(198, 168, 117, 0.08); border: 1px solid var(--border-medium); font-size: 0.74rem; color: var(--text-secondary); text-align: left; line-height: 1.6;">
+              ⚜ <strong>Atelier Payment Protocol:</strong> No funds were debited online during this session. Your order has been commissioned with <strong>Payment Status: Pending</strong>. For online transfer orders, our private concierge desk will verify remittance or coordinate clearance before release. For COD, payment is collected upon white-glove arrival.
             </div>
 
             <div style="display: flex; gap: 14px; justify-content: center;">
@@ -1106,8 +1121,188 @@
             </tbody>
           </table>
         </div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+          <a href="admin.html" class="btn-luxury" style="padding: 10px 22px; font-size: 0.74rem;">
+            ⚜ Open Full Director Control Desk (Edit Clothes, Prices & Bespoke Requests) →
+          </a>
+          <span style="font-size: 0.72rem; color: var(--champagne-gold);">Dedicated Administrative System</span>
+        </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       CUSTOMER / PATRON LOGIN MODAL (Email or Mobile Phone +91)
+       ============================================================================== -->
+  <div id="customerLoginModal" class="modal-overlay" onclick="closeCustomerLoginModal()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); max-width: 480px; width: 100%; padding: 40px; position: relative;" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeCustomerLoginModal()">✕</button>
+
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span class="section-pretitle">The Private Maison</span>
+        <h3 style="font-size: 1.45rem; color: var(--warm-ivory); margin: 6px 0 8px;">Patron Authentication</h3>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6;">
+          Enter your mobile phone number (+91) or patron email address to access your bespoke orders and saved consignments.
+        </p>
+      </div>
+
+      <!-- Auth Mode Selector (Phone or Email) -->
+      <div style="display: flex; border: 1px solid var(--border-subtle); margin-bottom: 20px;">
+        <button type="button" id="tabLoginPhone" class="admin-tab-btn active" style="flex: 1; text-align: center; padding: 10px;" onclick="switchCustomerLoginMode('phone')">
+          📱 Mobile Phone (+91)
+        </button>
+        <button type="button" id="tabLoginEmail" class="admin-tab-btn" style="flex: 1; text-align: center; padding: 10px;" onclick="switchCustomerLoginMode('email')">
+          ✉ Patron Email
+        </button>
+      </div>
+
+      <form id="customerLoginForm" onsubmit="handleCustomerLoginSubmit(event)">
+        <!-- Phone Input Block -->
+        <div id="loginPhoneBlock" class="input-block">
+          <label class="input-label">Indian Mobile Number (+91) *</label>
+          <div style="display: flex; gap: 8px;">
+            <span style="background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--champagne-gold); padding: 12px 14px; font-size: 0.85rem; font-weight: 600;">+91</span>
+            <input type="tel" id="customerPhoneInput" class="luxury-input" placeholder="98201 88420" maxlength="10" value="9820188420">
+          </div>
+        </div>
+
+        <!-- Email Input Block -->
+        <div id="loginEmailBlock" class="input-block" style="display: none;">
+          <label class="input-label">Patron Email Address *</label>
+          <input type="email" id="customerEmailInput" class="luxury-input" placeholder="siddharth.singhania@heritage.in">
+        </div>
+
+        <!-- OTP Simulation Step -->
+        <div id="otpInputBlock" style="display: none; margin-top: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <label class="input-label" style="margin: 0;">One-Time Passcode (OTP)</label>
+            <span style="font-size: 0.68rem; color: var(--champagne-gold);">Test Code: <strong>884201</strong></span>
+          </div>
+          <input type="text" id="customerOtpInput" class="luxury-input" maxlength="6" placeholder="884201" value="884201" style="font-size: 1.2rem; letter-spacing: 0.3em; text-align: center;">
+          <p style="font-size: 0.72rem; color: var(--muted-stone); margin-top: 6px; text-align: center;">
+            ✦ Encrypted patron authentication via SMS / secure token.
+          </p>
+        </div>
+
+        <button type="submit" id="btnCustomerLoginSubmit" class="btn-luxury" style="width: 100%; margin-top: 16px; padding: 14px;">
+          Request Secure Passcode (OTP) →
+        </button>
+      </form>
+
+      <!-- 1-Click Fast Login for Convenience -->
+      <div style="margin-top: 20px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+        <button type="button" class="btn-luxury-outline" style="width: 100%; padding: 10px; font-size: 0.72rem;" onclick="quickCustomerLogin()">
+          ⚡ 1-Click Patron Sign-In (Siddharth Singhania — +91 98201 88420)
+        </button>
+      </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <a href="javascript:void(0)" onclick="closeCustomerLoginModal(); openAdminModal();" style="font-size: 0.7rem; color: var(--muted-stone); text-decoration: underline;">
+          Are you a Maison Director? Access Director Portal →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================================
+       BESPOKE TAILORING & CUSTOMIZATION REQUEST MODAL
+       ============================================================================== -->
+  <div id="bespokeModal" class="modal-overlay" onclick="closeBespokeModal()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border-medium); max-width: 680px; width: 100%; max-height: 90vh; padding: 36px; position: relative; overflow-y: auto;" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeBespokeModal()">✕</button>
+
+      <span class="section-pretitle">Haute Sartorial Sur-Mesure</span>
+      <h3 style="font-size: 1.4rem; color: var(--warm-ivory); margin-bottom: 6px;">Commission Bespoke Tailoring</h3>
+      <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">
+        Submit your anatomical measurements for custom drafting by our Master Tailor. Each bespoke garment includes hand-interlining and personalized silk monogram embroidery.
+      </p>
+
+      <form onsubmit="handleBespokeSubmit(event)">
+        <div class="input-block">
+          <label class="input-label">Garment Piece to Commission *</label>
+          <select id="bespokeGarmentSelect" class="luxury-input" required>
+            <option value="Architectural Poplin Dress Shirt">Architectural Poplin Dress Shirt (₹26,999)</option>
+            <option value="Signature Mercerised Cotton T-Shirt">Signature Mercerised Cotton T-Shirt (₹19,999)</option>
+            <option value="The Sovereign Double-Faced Cashmere Overcoat">The Sovereign Double-Faced Cashmere Overcoat (₹79,999)</option>
+            <option value="14oz Kuroki Japanese Selvedge Denim">14oz Kuroki Japanese Selvedge Denim (₹26,999)</option>
+            <option value="The Milanese Silk-Linen Leisure Overshirt">The Milanese Silk-Linen Leisure Overshirt (₹28,999)</option>
+            <option value="The Royal Oxford Formal Shirt">The Royal Oxford Formal Shirt (₹24,999)</option>
+            <option value="The Master Tailored Wool Trench Coat">The Master Tailored Wool Trench Coat (₹44,999)</option>
+          </select>
+        </div>
+
+        <div class="form-grid-row">
+          <div class="input-block">
+            <label class="input-label">Patron Full Name *</label>
+            <input type="text" id="bespokeName" class="luxury-input" value="Siddharth Singhania" required>
+          </div>
+          <div class="input-block">
+            <label class="input-label">Mobile Phone (+91) *</label>
+            <input type="tel" id="bespokePhone" class="luxury-input" value="+91 98201 88420" required>
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Private Email Address *</label>
+          <input type="email" id="bespokeEmail" class="luxury-input" value="siddharth.singhania@heritage.in" required>
+        </div>
+
+        <h4 style="font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--champagne-gold); margin: 20px 0 10px;">
+          Anatomical Measurements (Inches)
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+          <div class="input-block">
+            <label class="input-label">Collar (in)</label>
+            <input type="text" id="bespokeCollar" class="luxury-input" value="16.5">
+          </div>
+          <div class="input-block">
+            <label class="input-label">Chest (in) *</label>
+            <input type="text" id="bespokeChest" class="luxury-input" value="41" required>
+          </div>
+          <div class="input-block">
+            <label class="input-label">Shoulder Width (in)</label>
+            <input type="text" id="bespokeShoulder" class="luxury-input" value="18.5">
+          </div>
+          <div class="input-block">
+            <label class="input-label">Sleeve Length (in)</label>
+            <input type="text" id="bespokeSleeve" class="luxury-input" value="34.5">
+          </div>
+          <div class="input-block">
+            <label class="input-label">Waist (in)</label>
+            <input type="text" id="bespokeWaist" class="luxury-input" value="33.5">
+          </div>
+          <div class="input-block">
+            <label class="input-label">Garment Length (in)</label>
+            <input type="text" id="bespokeLength" class="luxury-input" value="30">
+          </div>
+        </div>
+
+        <div class="form-grid-row">
+          <div class="input-block">
+            <label class="input-label">Personal Monogram Initials (2-3 Letters)</label>
+            <input type="text" id="bespokeMonogram" class="luxury-input" maxlength="4" placeholder="e.g. S.S." value="S.S." style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--champagne-gold);">
+          </div>
+          <div class="input-block">
+            <label class="input-label">Embroidery Placement</label>
+            <select id="bespokeMonogramPlacement" class="luxury-input">
+              <option value="Left French Cuff">Left French Cuff</option>
+              <option value="Discreet Inner Hem">Discreet Inner Hem</option>
+              <option value="Left Breast Pocket">Left Breast Pocket</option>
+              <option value="Collar Stand Inside">Collar Stand Inside</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Special Atelier Notes / Tailoring Specifications</label>
+          <textarea id="bespokeNotes" class="luxury-input" rows="3" placeholder="e.g. Requesting Milanese hand-sewn buttonhole, horn buttons, higher armhole cut..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-luxury" style="width: 100%; margin-top: 14px; padding: 16px;">
+          Submit Bespoke Commission to Atelier →
+        </button>
+      </form>
     </div>
   </div>
 

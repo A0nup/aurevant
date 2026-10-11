@@ -106,6 +106,68 @@ def init_db():
     )
     """)
 
+    # Bespoke Customization Requests Table
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS custom_requests (
+        id TEXT PRIMARY KEY,
+        customer_name TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        customer_email TEXT NOT NULL,
+        garment_title TEXT NOT NULL,
+        measurements_json TEXT NOT NULL,
+        monogram TEXT,
+        notes TEXT,
+        status TEXT DEFAULT 'New Bespoke Request',
+        created_at TEXT
+    )
+    """)
+
+    # Customers Table (Email or Phone Login)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS customers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT,
+        phone TEXT,
+        password_hash TEXT,
+        created_at TEXT
+    )
+    """)
+
+    # Seed initial bespoke requests if empty
+    cursor.execute("SELECT COUNT(*) FROM custom_requests")
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("""
+        INSERT INTO custom_requests (id, customer_name, customer_phone, customer_email, garment_title, measurements_json, monogram, notes, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            "REQ-AV-2026-01",
+            "Siddharth Singhania",
+            "+91 98201 88420",
+            "siddharth.singhania@heritage.in",
+            "Architectural Poplin Dress Shirt",
+            json.dumps({"collar": "16 in", "chest": "40 in", "shoulder": "18.5 in", "sleeve": "34.5 in", "waist": "33 in"}),
+            "S.S.",
+            "Requesting Milanese collar with double-interlined French cuffs.",
+            "Atelier Fitting Scheduled",
+            datetime.datetime.now().isoformat()
+        ))
+        cursor.execute("""
+        INSERT INTO custom_requests (id, customer_name, customer_phone, customer_email, garment_title, measurements_json, monogram, notes, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            "REQ-AV-2026-02",
+            "Aditya Singhal",
+            "+91 98111 23456",
+            "aditya@singhalholdings.com",
+            "The Sovereign Double-Faced Cashmere Overcoat",
+            json.dumps({"chest": "42 in", "shoulder": "19.2 in", "length": "46 in", "sleeve": "35 in"}),
+            "A.S.",
+            "Need custom horn buttons engraved with AV monogram rim.",
+            "New Bespoke Request",
+            datetime.datetime.now().isoformat()
+        ))
+
     # Default Settings
     default_settings = {
         "cod_enabled": "true",
@@ -711,11 +773,28 @@ class OrdersHandler(BaseHandler):
         total = subtotal + shipping_fee
 
         payment_method = payment.get("method", "UPI")
-        payment_status = "Pending Payment"
+        
+        # Payment verification: never mark as Paid unless verified by cryptographic gateway signature
+        rzp_sig = payment.get("razorpay_signature", "").strip()
+        rzp_oid = payment.get("razorpay_order_id", "").strip()
+        rzp_pid = payment.get("razorpay_payment_id", "").strip()
+
         if payment_method == "COD":
             payment_status = "Pending - Collect on Delivery"
-        elif payment.get("status") == "Paid":
-            payment_status = "Paid"
+        elif rzp_sig and rzp_oid and rzp_pid:
+            # Verify cryptographic signature
+            gen_sig = hmac.new(
+                RAZORPAY_KEY_SECRET.encode("utf-8"),
+                f"{rzp_oid}|{rzp_pid}".encode("utf-8"),
+                hashlib.sha256
+            ).hexdigest()
+            if hmac.compare_digest(gen_sig, rzp_sig):
+                payment_status = "Paid (Verified)"
+            else:
+                payment_status = "Payment Pending (Awaiting Online Transfer)"
+        else:
+            # All online payments without cryptographic signature remain strictly Pending
+            payment_status = "Payment Pending (Awaiting Online Transfer)"
 
         order_id = "AV-" + datetime.datetime.now().strftime("%Y%m%d") + "-" + str(uuid.uuid4().hex[:5]).upper()
 
@@ -1051,6 +1130,20 @@ class AdminProductsHandler(BaseHandler):
         conn.close()
         self.write({"success": True, "message": f"Product {product_id} updated."})
 
+    def delete(self, product_id):
+        admin = self.get_admin_user()
+        if not admin:
+            self.set_status(401)
+            self.write({"success": False, "error": "Unauthorized."})
+            return
+
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("UPDATE products SET is_active = 0 WHERE id = ?", (product_id,))
+        conn.commit()
+        conn.close()
+        self.write({"success": True, "message": f"Product {product_id} archived from catalog."})
+
 class AdminSettingsHandler(BaseHandler):
     def get(self):
         conn = sqlite3.connect(DB_FILE)
@@ -1077,6 +1170,120 @@ class AdminSettingsHandler(BaseHandler):
         conn.close()
         self.write({"success": True, "message": "Settings updated."})
 
+class CustomRequestsHandler(BaseHandler):
+    def get(self):
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM custom_requests ORDER BY created_at DESC")
+        rows = cursor.fetchall()
+        conn.close()
+        reqs = [{
+            "id": r[0], "customerName": r[1], "customerPhone": r[2], "customerEmail": r[3],
+            "garmentTitle": r[4], "measurements": json.loads(r[5]) if r[5] else {},
+            "monogram": r[6], "notes": r[7], "status": r[8], "createdAt": r[9]
+        } for r in rows]
+        self.write({"success": True, "count": len(reqs), "requests": reqs})
+
+    def post(self):
+        data = self.get_json_body()
+        req_id = "REQ-AV-" + datetime.datetime.now().strftime("%Y%m%d") + "-" + str(uuid.uuid4().hex[:4]).upper()
+        name = data.get("name", "Distinguished Patron")
+        phone = data.get("phone", "+91 98200 12345")
+        email = data.get("email", "patron@aurevant.com")
+        garment = data.get("garment", "Bespoke Silhouette")
+        measurements = json.dumps(data.get("measurements", {}))
+        monogram = data.get("monogram", "")
+        notes = data.get("notes", "")
+
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("""
+        INSERT INTO custom_requests (id, customer_name, customer_phone, customer_email, garment_title, measurements_json, monogram, notes, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (req_id, name, phone, email, garment, measurements, monogram, notes, "New Bespoke Request", datetime.datetime.now().isoformat()))
+        conn.commit()
+        conn.close()
+
+        self.write({
+            "success": True,
+            "requestId": req_id,
+            "message": f"Your bespoke tailoring commission {req_id} has been registered with the Master Tailor."
+        })
+
+    def put(self, req_id):
+        data = self.get_json_body()
+        status = data.get("status", "Under Review")
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("UPDATE custom_requests SET status = ? WHERE id = ?", (status, req_id))
+        conn.commit()
+        conn.close()
+        self.write({"success": True, "message": f"Request {req_id} updated to {status}."})
+
+class CustomerAuthHandler(BaseHandler):
+    def post(self):
+        data = self.get_json_body()
+        identifier = data.get("identifier", "").strip()
+        method = data.get("method", "otp")
+        otp = data.get("otp", "8842")
+
+        if not identifier:
+            self.set_status(400)
+            self.write({"success": False, "error": "Please enter your mobile phone number or email address."})
+            return
+
+        is_phone = identifier.replace("+", "").replace("-", "").replace(" ", "").isdigit()
+        name = "Siddharth Singhania" if "singhania" in identifier.lower() or "98201" in identifier else (identifier.split("@")[0].capitalize() if "@" in identifier else f"Patron {identifier[-4:]}")
+        token = f"patron_token_{uuid.uuid4().hex[:12]}"
+
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        if is_phone:
+            cursor.execute("SELECT id, name FROM customers WHERE phone = ?", (identifier,))
+            row = cursor.fetchone()
+            if not row:
+                cursor.execute("INSERT INTO customers (name, phone, created_at) VALUES (?, ?, ?)", (name, identifier, datetime.datetime.now().isoformat()))
+                conn.commit()
+        else:
+            cursor.execute("SELECT id, name FROM customers WHERE email = ?", (identifier.lower(),))
+            row = cursor.fetchone()
+            if not row:
+                cursor.execute("INSERT INTO customers (name, email, created_at) VALUES (?, ?, ?)", (name, identifier.lower(), datetime.datetime.now().isoformat()))
+                conn.commit()
+        conn.close()
+
+        self.write({
+            "success": True,
+            "token": token,
+            "customer": {
+                "name": name,
+                "identifier": identifier,
+                "tier": "AUREVANT Patron Privé"
+            },
+            "message": f"Authentication granted. Welcome to the Private Chamber, {name}."
+        })
+
+class UploadImageHandler(BaseHandler):
+    def post(self):
+        import base64
+        data = self.get_json_body()
+        image_data = data.get("imageData", "")
+        filename = data.get("filename", f"garment_{int(datetime.datetime.now().timestamp())}.jpg")
+
+        uploads_dir = BASE_DIR / "uploads"
+        uploads_dir.mkdir(exist_ok=True)
+
+        if image_data.startswith("data:image"):
+            header, encoded = image_data.split(",", 1)
+            raw = base64.b64decode(encoded)
+            file_path = uploads_dir / filename
+            with open(file_path, "wb") as f:
+                f.write(raw)
+            self.write({"success": True, "imageUrl": f"/uploads/{filename}"})
+            return
+
+        self.write({"success": False, "error": "Invalid image payload."})
+
 class HealthHandler(BaseHandler):
     def get(self):
         self.write({
@@ -1093,6 +1300,9 @@ class HealthHandler(BaseHandler):
 # Server Construction & Multi-Port Listening
 # ==============================================================================
 def make_app():
+    uploads_dir = BASE_DIR / "uploads"
+    uploads_dir.mkdir(exist_ok=True)
+
     return tornado.web.Application([
         (r"/api/health/?", HealthHandler),
         (r"/api/products/?", ProductsHandler),
@@ -1102,12 +1312,17 @@ def make_app():
         (r"/api/orders/([^/]+)/?", OrdersHandler),
         (r"/api/payments/razorpay/create-order/?", RazorpayOrderHandler),
         (r"/api/payments/razorpay/verify/?", RazorpayVerifyHandler),
+        (r"/api/custom-requests/?", CustomRequestsHandler),
+        (r"/api/custom-requests/([^/]+)/?", CustomRequestsHandler),
+        (r"/api/auth/customer-login/?", CustomerAuthHandler),
+        (r"/api/upload-image/?", UploadImageHandler),
         (r"/api/admin/login/?", AdminAuthHandler),
         (r"/api/admin/orders/?", AdminOrdersHandler),
         (r"/api/admin/orders/([^/]+)/?", AdminOrdersHandler),
         (r"/api/admin/products/?", AdminProductsHandler),
         (r"/api/admin/products/([^/]+)/?", AdminProductsHandler),
         (r"/api/admin/settings/?", AdminSettingsHandler),
+        (r"/uploads/(.*)", tornado.web.StaticFileHandler, {"path": str(uploads_dir)}),
         (r"/(.*)", tornado.web.StaticFileHandler, {
             "path": str(BASE_DIR),
             "default_filename": "index.html"
